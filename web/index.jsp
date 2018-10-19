@@ -60,5 +60,10 @@
     <button type="submit" name="button" value="button1">Status</button>
     <button type="submit" name="button" value="button2">Sort</button>
 </form>
+<h2>counter</h2>
+<%
+    String name = Integer.toString((Integer) request.getAttribute("count"));
+    out.println(name);
+%>
 </body>
 </html>

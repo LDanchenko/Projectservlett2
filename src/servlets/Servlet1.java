@@ -18,11 +18,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @WebServlet("/database")
 public class Servlet1 extends javax.servlet.http.HttpServlet {
     private static final long serialVersionUID = 1L;
+    AtomicInteger atomicInteger = new AtomicInteger(0); // initialize it with a value or empty
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        atomicInteger.addAndGet(1);
+        int theValue = atomicInteger.get(); // this is how you get it
         String button = request.getParameter("button");
 
         if ("button1".equals(button)) {
@@ -33,6 +38,8 @@ public class Servlet1 extends javax.servlet.http.HttpServlet {
             request.setAttribute("logistics", logistics);
             ArrayList<String> status = Database.selectStatus(statement);
             request.setAttribute("status", status);
+            request.setAttribute("count", theValue);
+
             RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
             dispatcher.forward(request, response);
         }
@@ -42,6 +49,8 @@ public class Servlet1 extends javax.servlet.http.HttpServlet {
             request.setAttribute("logistics", logistics);
             ArrayList<String> status = Database.selectStatus(statement);
             request.setAttribute("status", status);
+            request.setAttribute("count", theValue);
+
             RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
             dispatcher.forward(request, response);
 
@@ -50,7 +59,8 @@ public class Servlet1 extends javax.servlet.http.HttpServlet {
 
 
     protected void sort(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        atomicInteger.addAndGet(1);
+        int theValue = atomicInteger.get(); // this is how you get it
         String statusId = (request.getParameter("status").toString());
         request.setAttribute("status", statusId);
         Statement statement = Database.connect();
@@ -58,6 +68,8 @@ public class Servlet1 extends javax.servlet.http.HttpServlet {
         request.setAttribute("logistics", logistics);
         ArrayList<String> status = Database.selectStatus(statement);
         request.setAttribute("status", status);
+        request.setAttribute("count", theValue);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
     }
@@ -65,12 +77,17 @@ public class Servlet1 extends javax.servlet.http.HttpServlet {
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        atomicInteger.addAndGet(1);
+        int theValue = atomicInteger.get(); // this is how you get it
+
+
         Statement statement = Database.connect();
         ArrayList<Logistic> logistics = Database.select(statement);
         request.setAttribute("logistics", logistics);
 
         ArrayList<String> status = Database.selectStatus(statement);
         request.setAttribute("status", status);
+        request.setAttribute("count", theValue);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
     }
