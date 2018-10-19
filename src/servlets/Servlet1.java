@@ -40,6 +40,8 @@ public class Servlet1 extends javax.servlet.http.HttpServlet {
             request.setAttribute("status", status);
             request.setAttribute("count", theValue);
 
+
+
             RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
             dispatcher.forward(request, response);
         }
