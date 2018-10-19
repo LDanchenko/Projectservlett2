@@ -47,15 +47,18 @@
         </tr>
     </c:forEach>
 </table>
-<form action="index.jsp" method="post">
-    Select status:&nbsp;
+<form action="${pageContext.request.contextPath}/database" method="post">
+    Select status:
 <select name = "status">
     <c:forEach var="stat" items="${status}">
         <option value="${stat}">${stat}</option>
     </c:forEach>
 </select>
     <br/><br/>
-    <input type="submit" value="Submit" />
+    <%--<input type="submit" name="button1" value="Submit" />--%>
+    <%--<input type="submit" name="button2" value="Button 1" />--%>
+    <button type="submit" name="button" value="button1">Status</button>
+    <button type="submit" name="button" value="button2">Sort</button>
 </form>
-  </body>
+</body>
 </html>

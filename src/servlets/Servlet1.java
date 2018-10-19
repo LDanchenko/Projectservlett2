@@ -23,30 +23,52 @@ import java.util.Properties;
 public class Servlet1 extends javax.servlet.http.HttpServlet {
     private static final long serialVersionUID = 1L;
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String button = request.getParameter("button");
 
-       String statusId = (request.getParameter("status").toString());
+        if ("button1".equals(button)) {
+            String statusId = (request.getParameter("status").toString());
+            request.setAttribute("status", statusId);
+            Statement statement = Database.connect();
+            ArrayList<Logistic> logistics = Database.selectByStatus(statement, statusId);
+            request.setAttribute("logistics", logistics);
+            ArrayList<String> status = Database.selectStatus(statement);
+            request.setAttribute("status", status);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+            dispatcher.forward(request, response);
+        }
+        else if ("button2".equals(button)) {
+            Statement statement = Database.connect();
+            ArrayList<Logistic> logistics = Database.sort(statement);
+            request.setAttribute("logistics", logistics);
+            ArrayList<String> status = Database.selectStatus(statement);
+            request.setAttribute("status", status);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+            dispatcher.forward(request, response);
 
-                request.setAttribute("status", statusId);
-
-                listCategory(request, response, statusId);
+        }
     }
 
-    private void listCategory(HttpServletRequest request, HttpServletResponse response, String status)
-            throws ServletException, IOException {
 
-          Statement statement = Database.connect();
+    protected void sort(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-            ArrayList<Logistic> logistics = Database.selectSBytatus(statement, status);
+        String statusId = (request.getParameter("status").toString());
+        request.setAttribute("status", statusId);
+        Statement statement = Database.connect();
+        ArrayList<Logistic> logistics = Database.selectByStatus(statement, statusId);
         request.setAttribute("logistics", logistics);
+        ArrayList<String> status = Database.selectStatus(statement);
+        request.setAttribute("status", status);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
-
     }
+
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Statement statement = Database.connect();
         ArrayList<Logistic> logistics = Database.select(statement);
         request.setAttribute("logistics", logistics);
+
         ArrayList<String> status = Database.selectStatus(statement);
         request.setAttribute("status", status);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
